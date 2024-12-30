@@ -1,3 +1,5 @@
+@echo off
+
 set MAJOR=2
 set MINOR=16
 set REVISION=45
@@ -6,7 +8,7 @@ set STRPRIVATEBUILD=""
 
 set RCVER=%MAJOR%.%MINOR%.%REVISION%.%PATCHLEVEL%
 set STRVER=%MAJOR%.%MINOR%.%REVISION%.%PATCHLEVEL%
-rem set STRVER=%MAJOR%.%MINOR%.%REVISION%
+
 SET PRIVATEBUILD=%STRPRIVATEBUILD:"=%
 if %STRPRIVATEBUILD% == "" (
   set APPVER=%STRVER%
@@ -15,3 +17,11 @@ if %STRPRIVATEBUILD% == "" (
   set APPVER=%STRVER%+-%PRIVATEBUILD%
   set SAFEAPPVER=%STRVER%-%PRIVATEBUILD%
 )
+
+setlocal enabledelayedexpansion
+(
+for /f "usebackq delims=" %%a in ("Version.in") do (
+    call echo %%a
+)
+) > Version.h
+endlocal
